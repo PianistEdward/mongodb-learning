@@ -1,7 +1,7 @@
 # mongodb副本集（同一台服务器）：1主2从
 services:
   mongo1:
-    image: mongo:latest
+    image: mongo:7.0.12 # mongo:latest
     container_name: mongo1
     healthcheck:
       test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
@@ -25,7 +25,7 @@ services:
       - app-network
 
   mongo2:
-    image: mongo:latest
+    image: mongo:7.0.12 # mongo:latest
     container_name: mongo2
     depends_on:
       - mongo1
@@ -46,7 +46,7 @@ services:
       - app-network
 
   mongo3:
-    image: mongo:latest
+    image: mongo:7.0.12 # mongo:latest
     container_name: mongo3
     depends_on:
       - mongo1

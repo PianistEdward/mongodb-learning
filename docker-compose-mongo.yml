@@ -1,7 +1,7 @@
 # mongodb单机
 services:
   mongo:
-    image: mongo:latest
+    image: mongo:7.0.12 # mongo:latest
     container_name: mongo
     restart: always
     environment:
