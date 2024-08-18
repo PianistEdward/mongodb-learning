@@ -1,0 +1,22 @@
+# 使用mongodb单机:
+# docker compose -f docker-compose-mongo.yml -f docker-compose.yml up -d
+services:
+  demo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: demo
+    restart: always
+    volumes:
+      - /opt/demo/mongo-learning/logs:/opt/demo/mongo-learning/logs
+    depends_on:
+      - mongo # docker-compose-mongo.yml定义的服务
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://demo:demo123@mongo:27017/demo
+    ports:
+      - "8519:8519"
+    networks:
+      - app-network
+
+networks:
+  app-network:

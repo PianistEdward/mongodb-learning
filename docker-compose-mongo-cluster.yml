@@ -1,0 +1,76 @@
+# mongodb副本集（同一台服务器）：1主2从
+services:
+  mongo1:
+    image: mongo:latest
+    container_name: mongo1
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      - MONGO_REPLICA_SET_NAME=rs0
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=demo123
+    volumes:
+      - ./mongo-keyfile:/etc/mongo-keyfile
+      - /data/db//mongo_data1:/data/db
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./wait-for-it.sh:/wait-for-it.sh
+      - ./start.sh:/start.sh
+    entrypoint: /bin/bash /start.sh
+    ports:
+      - 27017:27017
+    networks:
+      - app-network
+
+  mongo2:
+    image: mongo:latest
+    container_name: mongo2
+    depends_on:
+      - mongo1
+    environment:
+      - MONGO_REPLICA_SET_NAME=rs0
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=demo123
+    volumes:
+      - ./mongo-keyfile:/etc/mongo-keyfile
+      - /data/db//mongo_data2:/data/db
+    ports:
+      - 27018:27017
+    command: >
+      bash -c "
+      chmod 400 /etc/mongo-keyfile &&
+      mongod --replSet rs0 --bind_ip_all --keyFile /etc/mongo-keyfile"
+    networks:
+      - app-network
+
+  mongo3:
+    image: mongo:latest
+    container_name: mongo3
+    depends_on:
+      - mongo1
+    environment:
+      - MONGO_REPLICA_SET_NAME=rs0
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=demo123
+    volumes:
+      - ./mongo-keyfile:/etc/mongo-keyfile
+      - /data/db//mongo_data3:/data/db
+    ports:
+      - 27019:27017
+    command: >
+      bash -c "
+      chmod 400 /etc/mongo-keyfile &&
+      mongod --replSet rs0 --bind_ip_all --keyFile /etc/mongo-keyfile"
+    networks:
+      - app-network
+
+volumes:
+  mongo_data1:
+  mongo_data2:
+  mongo_data3:
+
+networks:
+  app-network:
+    driver: bridge

@@ -1,0 +1,12 @@
+server:
+  port: 8519
+spring:
+  application:
+   name: mongo-demo
+  data:
+    mongodb:
+      uri: mongodb://demo:demo123@127.0.0.1:27017/demo
+      auto-index-creation: true
+      gridfs:
+        database: demo
+        bucket: demo
