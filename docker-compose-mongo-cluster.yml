@@ -3,6 +3,7 @@ services:
   mongo1:
     image: mongo:7.0.12 # mongo:latest
     container_name: mongo1
+    privileged: true
     healthcheck:
       test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
       interval: 10s
@@ -10,12 +11,11 @@ services:
       retries: 5
     environment:
       - MONGO_REPLICA_SET_NAME=rs0
-      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=demo123
     volumes:
       - ./mongo-keyfile:/etc/mongo-keyfile
       - /data/db/mongo_data1:/data/db
-      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
       - ./wait-for-it.sh:/wait-for-it.sh
       - ./start.sh:/start.sh
     entrypoint: /bin/bash /start.sh
@@ -27,11 +27,12 @@ services:
   mongo2:
     image: mongo:7.0.12 # mongo:latest
     container_name: mongo2
+    privileged: true
     depends_on:
       - mongo1
     environment:
       - MONGO_REPLICA_SET_NAME=rs0
-      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=demo123
     volumes:
       - ./mongo-keyfile:/etc/mongo-keyfile
@@ -48,11 +49,12 @@ services:
   mongo3:
     image: mongo:7.0.12 # mongo:latest
     container_name: mongo3
+    privileged: true
     depends_on:
       - mongo1
     environment:
       - MONGO_REPLICA_SET_NAME=rs0
-      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=demo123
     volumes:
       - ./mongo-keyfile:/etc/mongo-keyfile

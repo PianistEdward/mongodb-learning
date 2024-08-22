@@ -29,7 +29,10 @@ db.createUser({ user: "demo", pwd: "demo123", roles: [ { role: "dbOwner", db: "d
 docker exec -it mongo1 mongosh
 rs.status()
 ````
-
+或者
+```shell
+docker exec -it mongo1 mongosh --eval 'rs.status()'
+````
 ## docker命令行
 ### 1、启动mongodb容器
 ```shell
