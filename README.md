@@ -29,11 +29,11 @@ db.createUser({ user: "demo", pwd: "demo123", roles: [ { role: "dbOwner", db: "d
 第一步：创建admin用户
 ```shell
 docker exec -it mongo1 mongosh --eval '
-db = db.getSiblingDB('admin');
+db = db.getSiblingDB("admin");
 db.createUser({
-user: 'admin',
-pwd: '123456',
-roles: [{ role: 'root', db: 'admin' }]
+user: "admin",
+pwd: "123456",
+roles: [{ role: "root", db: "admin" }]
 });
 '
 ```
@@ -53,11 +53,11 @@ roles: [{ role: "dbOwner", db: "demo" }]
 也可以合并成一步：
 ```shell
 docker exec -it mongo1 mongosh --eval '
-db = db.getSiblingDB('admin');
+db = db.getSiblingDB("admin");
 db.createUser({
-user: 'admin',
-pwd: '123456',
-roles: [{ role: 'root', db: 'admin' }]
+user: "admin",
+pwd: "123456",
+roles: [{ role: "root", db: "admin" }]
 });
 db.auth("admin", "123456");
 db = db.getSiblingDB("demo");

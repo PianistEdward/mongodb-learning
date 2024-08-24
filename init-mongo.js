@@ -7,14 +7,14 @@ var adminExists = db.getUser('admin');
 if (!adminExists) {
     db.createUser({
         user: 'admin',
-        pwd: 'demo123',
+        pwd: '123456',
         roles: [{ role: 'root', db: 'admin' }]
     });
 } else {
     print('User "admin" already exists. No action taken.');
 }
 
-var authSuccess = db.auth("admin", "demo123");
+var authSuccess = db.auth("admin", "123456");
 if (!authSuccess) {
     print("Failed to authenticate as admin. Exiting...");
     quit(1);

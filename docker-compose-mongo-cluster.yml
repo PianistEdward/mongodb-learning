@@ -12,7 +12,7 @@ services:
     environment:
       - MONGO_REPLICA_SET_NAME=rs0
       - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=demo123
+      - MONGO_INITDB_ROOT_PASSWORD=123456
     volumes:
       - ./mongo-keyfile:/etc/mongo-keyfile
       - /data/db/mongo_data1:/data/db
@@ -33,7 +33,7 @@ services:
     environment:
       - MONGO_REPLICA_SET_NAME=rs0
       - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=demo123
+      - MONGO_INITDB_ROOT_PASSWORD=123456
     volumes:
       - ./mongo-keyfile:/etc/mongo-keyfile
       - /data/db/mongo_data2:/data/db
@@ -55,7 +55,7 @@ services:
     environment:
       - MONGO_REPLICA_SET_NAME=rs0
       - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=demo123
+      - MONGO_INITDB_ROOT_PASSWORD=123456
     volumes:
       - ./mongo-keyfile:/etc/mongo-keyfile
       - /data/db/mongo_data3:/data/db
