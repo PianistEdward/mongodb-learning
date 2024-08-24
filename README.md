@@ -11,19 +11,64 @@ chmod 600 mongo-keyfile
 生成一个名为 mongo-keyfile 的文件，并确保它的权限是 600，即只有拥有者可以读取和写入。
 
 ### 2、手动设置账号密码
+使用mongosh：
 ```shell
 // docker exec -it container_name mongosh
 docker exec -it mongo1 mongosh
 db = db.getSiblingDB('admin');
 db.createUser({
 user: 'admin',
-pwd: 'demo123',
+pwd: '123456',
 roles: [{ role: 'root', db: 'admin' }]
 });
-db.auth("admin","demo123");
+db.auth("admin","123456");
 db = db.getSiblingDB('demo');
 db.createUser({ user: "demo", pwd: "demo123", roles: [ { role: "dbOwner", db: "demo" }] });
 ````
+或者使用eval函数：
+第一步：创建admin用户
+```shell
+docker exec -it mongo1 mongosh --eval '
+db = db.getSiblingDB('admin');
+db.createUser({
+user: 'admin',
+pwd: '123456',
+roles: [{ role: 'root', db: 'admin' }]
+});
+'
+```
+第二步：创建其它用户
+```shell
+docker exec -it mongo1 mongosh --eval '
+db = db.getSiblingDB("admin");
+db.auth("admin", "123456");
+db = db.getSiblingDB("demo");
+db.createUser({
+user: "demo",
+pwd: "demo123",
+roles: [{ role: "dbOwner", db: "demo" }]
+});
+'
+```
+也可以合并成一步：
+```shell
+docker exec -it mongo1 mongosh --eval '
+db = db.getSiblingDB('admin');
+db.createUser({
+user: 'admin',
+pwd: '123456',
+roles: [{ role: 'root', db: 'admin' }]
+});
+db.auth("admin", "123456");
+db = db.getSiblingDB("demo");
+db.createUser({
+user: "demo",
+pwd: "demo123",
+roles: [{ role: "dbOwner", db: "demo" }]
+});
+'
+```
+
 ### 查看集群状态
 ```shell
 docker exec -it mongo1 mongosh
